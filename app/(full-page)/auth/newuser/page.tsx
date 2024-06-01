@@ -15,10 +15,11 @@ const NewUserPage = () => {
 
     let usuarioVazio: Projeto.Usuario = {
         id: 0,
-        nome: '',
+        name: '',
         login: '',
         senha: '',
-        email: ''
+        email: '',
+        situacao: ''
     };
 
     const [usuario, setUsuario] = useState<Projeto.Usuario>(usuarioVazio);
@@ -77,13 +78,13 @@ const NewUserPage = () => {
                         </div>
 
                         <div>
-                            <label htmlFor="nome" className="block text-900 text-xl font-medium mb-2">
-                                Nome
+                            <label htmlFor="name" className="block text-900 text-xl font-medium mb-2">
+                                Name
                             </label>
-                            <InputText id="nome" 
-                             value={usuario.nome}
-                             onChange={(e) => onInputChange(e, 'nome')}
-                            type="text" placeholder="Digite seu nome" className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} />
+                            <InputText id="name" 
+                             value={usuario.name}
+                             onChange={(e) => onInputChange(e, 'name')}
+                            type="text" placeholder="Digite seu name" className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} />
 
                             <label htmlFor="login" className="block text-900 text-xl font-medium mb-2">
                                 Login

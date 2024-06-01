@@ -6,6 +6,8 @@ import React, { forwardRef, useContext, useImperativeHandle, useRef } from 'reac
 import { AppTopbarRef } from '../types/types';
 import { LayoutContext } from './context/layoutcontext';
 
+
+
 const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
     const { layoutConfig, layoutState, onMenuToggle, showProfileSidebar } = useContext(LayoutContext);
     const menubuttonRef = useRef(null);
@@ -18,12 +20,16 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
         topbarmenubutton: topbarmenubuttonRef.current
     }));
 
+    const logout = () => {
+        localStorage.removeItem('TOKEN_APLICACAO_FRONTEND');
+    }
+
     return (
         <div className="layout-topbar">
-            <Link href="/" className="layout-topbar-logo">
-                <img src={`/layout/images/logo-${layoutConfig.colorScheme !== 'light' ? 'white' : 'dark'}.svg`} width="47.22px" height={'35px'} alt="logo" />
-                <span>SAKAI</span>
-            </Link>
+            <a href="/" className="layout-topbar-logo">
+                <i className="pi pi-home" style={{ fontSize: '2.5rem', color: '#708090' }}/>
+                <span >HOME</span>
+            </a>
 
             <button ref={menubuttonRef} type="button" className="p-link layout-menu-button layout-topbar-button" onClick={onMenuToggle}>
                 <i className="pi pi-bars" />
@@ -44,10 +50,16 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
                 </button>
                 <Link href="/documentation">
                     <button type="button" className="p-link layout-topbar-button">
-                        <i className="pi pi-cog"></i>
+                        <i className="pi pi-spin pi-cog"></i>
                         <span>Settings</span>
                     </button>
                 </Link>
+                <a href="/"  onClick={() => logout()}>
+                    <button type="button" className="p-link layout-topbar-button">
+                        <i className="pi pi-sign-out"></i>
+                        <span>Sair</span>
+                    </button>
+                </a>
             </div>
         </div>
     );

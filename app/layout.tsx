@@ -8,6 +8,8 @@ import '../styles/layout/layout.scss';
 import '../styles/demo/Demos.scss';
 import { useEffect, useState } from 'react';
 import LoginPage from './(full-page)/auth/login/page';
+import NewUserPage from './(full-page)/auth/newuser/page';
+
 
 interface RootLayoutProps {
     children: React.ReactNode;
@@ -21,15 +23,28 @@ const checkAuth = () => {
         return false;
     }
 }
+const checkNewUser = () => {
+    if (localStorage.getItem('NEWUSER') === 'true' && localStorage.getItem('C') === '0') {
+        localStorage.setItem('C', '1');
+        return true;
+    } else {
+        localStorage.setItem('NEWUSER', 'false');
+        localStorage.setItem('C', '0');
+        return false;
+    }
+}
 
 export default function RootLayout({ children }: RootLayoutProps) {
 
-    const [pageLoaded, setPageLoaded] = useState(false);
+
     const [autenticado, setAutenticado] = useState(false);
+    const [newUser, setNewUser] = useState(false);
 
     useEffect(() => {
+        
         setAutenticado(checkAuth());
-        setPageLoaded(true);
+        setNewUser(checkNewUser());
+        
     }, []);
 
     return (
@@ -42,15 +57,19 @@ export default function RootLayout({ children }: RootLayoutProps) {
                     <PrimeReactProvider>
                         <LayoutProvider>{children}</LayoutProvider>
                     </PrimeReactProvider>
-                    :
-                    pageLoaded ?
+                        : newUser ? 
+                        <PrimeReactProvider>
+                            <LayoutProvider>
+                                <NewUserPage />
+                            </LayoutProvider>
+                        </PrimeReactProvider>
+                        :
                         <PrimeReactProvider>
                             <LayoutProvider>
                                 <LoginPage />
                             </LayoutProvider>
                         </PrimeReactProvider>
-                        :
-                        null
+
                 }
             </body>
         </html>

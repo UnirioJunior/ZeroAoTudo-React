@@ -26,6 +26,12 @@ const LoginPage = () => {
 
     const toast = useRef<Toast>(null);
 
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            efetuarLogin();
+        }
+    };
+
     const efetuarLogin = () => {
         loginService.login(login, senha).then((response) => {            
             console.log("Sucesso");
@@ -34,6 +40,7 @@ const LoginPage = () => {
             localStorage.setItem('TOKEN_APLICACAO_FRONTEND', response.data.token);
 
             router.push('/');
+            window.location.reload();
         }).catch(() => {
             
             toast.current?.show({
@@ -47,6 +54,11 @@ const LoginPage = () => {
         });
     }
 
+    const novoCadastro = () => {
+        localStorage.setItem('NEWUSER', 'true');
+        localStorage.setItem('C', '0');
+        window.location.reload();
+    };
     return (
         <div className={containerClassName}>
             <Toast ref={toast} />
@@ -61,34 +73,35 @@ const LoginPage = () => {
                 >
                     <div className="w-full surface-card py-8 px-5 sm:px-8" style={{ borderRadius: '53px' }}>
                         <div className="text-center mb-5">
-                            <span className="text-600 font-medium">Eu já possuo cadastro!</span>
+                            <span className="text-600 font-medium">Entrar no sistema!</span>
                         </div>
 
                         <div>
                             <label htmlFor="login" className="block text-900 text-xl font-medium mb-2">
                                 Login
                             </label>
-                            <InputText id="login" value={login} onChange={(e) => setLogin(e.target.value)} type="text" placeholder="Digite seu login" className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} />
+                            <InputText id="login" value={login} onChange={(e) => setLogin(e.target.value)} onKeyPress={handleKeyPress} type="text" placeholder="Digite seu login" className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} />
 
                             <label htmlFor="senha" className="block text-900 font-medium text-xl mb-2">
                                 Senha
                             </label>
-                            <Password inputId="senha" value={senha} onChange={(e) => setSenha(e.target.value)} placeholder="Password" toggleMask className="w-full mb-5" inputClassName="w-full p-3 md:w-30rem"></Password>
+                            <Password inputId="senha" value={senha} onChange={(e) => setSenha(e.target.value)} onKeyPress={handleKeyPress} placeholder="Password" toggleMask className="w-full mb-5" inputClassName="w-full p-3 md:w-30rem"></Password>
 
                             <div className="flex align-items-center justify-content-between mb-5 gap-5">                            
-                                <a className="font-medium no-underline ml-2 text-right cursor-pointer" style={{ color: 'var(--primary-color)' }} onClick={() => router.push('/auth/newuser')}>
-                                    Sou novo por aqui!
+                                <a className="font-medium no-underline ml-2 text-right cursor-pointer" onClick={novoCadastro}>
+                                    Fazer um novo cadastro
                                 </a>
                                 <a className="font-medium no-underline ml-2 text-right cursor-pointer" style={{ color: 'var(--primary-color)' }}>
-                                    Forgot password?
+                                    Esqueceu a senha?
                                 </a>
                             </div>
-                            <Button label="Entrar" className="w-full p-3 text-xl" onClick={() => efetuarLogin()}></Button>
+                            <Button label="Entrar" className="w-full p-3 text-xl" onClick={() => efetuarLogin()} ></Button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    
     );
 };
 

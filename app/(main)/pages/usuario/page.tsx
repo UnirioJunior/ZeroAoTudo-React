@@ -16,10 +16,11 @@ import { UsuarioService } from '../../../../service/UsuarioService';
 const Usuario = () => {
     let usuarioVazio: Projeto.Usuario = {
         id: 0,
-        nome: '',
+        name: '',
         login: '',
         senha: '',
-        email: ''
+        email: '',
+        situacao: '', 
     };
 
     const [usuarios, setUsuarios] = useState<Projeto.Usuario[] | null>(null);
@@ -69,6 +70,8 @@ const Usuario = () => {
         setSubmitted(true);
 
         if (!usuario.id) {
+            usuario.situacao = "A";
+            console.log(JSON.stringify(usuario));
             usuarioService.inserir(usuario)
                 .then((response) => {
                     setUsuarioDialog(false);
@@ -217,8 +220,8 @@ const Usuario = () => {
     const nomeBodyTemplate = (rowData: Projeto.Usuario) => {
         return (
             <>
-                <span className="p-column-title">Nome</span>
-                {rowData.nome}
+                <span className="p-column-title">Name</span>
+                {rowData.name}
             </>
         );
     };
@@ -305,7 +308,7 @@ const Usuario = () => {
                     >
                         <Column selectionMode="multiple" headerStyle={{ width: '4rem' }}></Column>
                         <Column field="id" header="Código" sortable body={idBodyTemplate} headerStyle={{ minWidth: '15rem' }}></Column>
-                        <Column field="nome" header="Nome" sortable body={nomeBodyTemplate} headerStyle={{ minWidth: '15rem' }}></Column>
+                        <Column field="name" header="Nome" sortable body={nomeBodyTemplate} headerStyle={{ minWidth: '15rem' }}></Column>
                         <Column field="login" header="Login" sortable body={loginBodyTemplate} headerStyle={{ minWidth: '15rem' }}></Column>
                         <Column field="email" header="Email" sortable body={emailBodyTemplate} headerStyle={{ minWidth: '15rem' }}></Column>
                         <Column body={actionBodyTemplate} headerStyle={{ minWidth: '10rem' }}></Column>
@@ -314,18 +317,18 @@ const Usuario = () => {
                     <Dialog visible={usuarioDialog} style={{ width: '450px' }} header="Detalhes de Usuário" modal className="p-fluid" footer={usuarioDialogFooter} onHide={hideDialog}>
 
                         <div className="field">
-                            <label htmlFor="nome">Nome</label>
+                            <label htmlFor="name">Name</label>
                             <InputText
-                                id="nome"
-                                value={usuario.nome}
-                                onChange={(e) => onInputChange(e, 'nome')}
+                                id="name"
+                                value={usuario.name}
+                                onChange={(e) => onInputChange(e, 'name')}
                                 required
                                 autoFocus
                                 className={classNames({
-                                    'p-invalid': submitted && !usuario.nome
+                                    'p-invalid': submitted && !usuario.name
                                 })}
                             />
-                            {submitted && !usuario.nome && <small className="p-invalid">Nome é obrigatório.</small>}
+                            {submitted && !usuario.name && <small className="p-invalid">Nome é obrigatório.</small>}
                         </div>
 
                         <div className="field">
@@ -337,7 +340,7 @@ const Usuario = () => {
                                 required
                                 autoFocus
                                 className={classNames({
-                                    'p-invalid': submitted && !usuario.nome
+                                    'p-invalid': submitted && !usuario.login
                                 })}
                             />
                             {submitted && !usuario.login && <small className="p-invalid">Login é obrigatório.</small>}
@@ -352,7 +355,7 @@ const Usuario = () => {
                                 required
                                 autoFocus
                                 className={classNames({
-                                    'p-invalid': submitted && !usuario.nome
+                                    'p-invalid': submitted && !usuario.senha
                                 })}
                             />
                             {submitted && !usuario.senha && <small className="p-invalid">Senha é obrigatório.</small>}
@@ -367,7 +370,7 @@ const Usuario = () => {
                                 required
                                 autoFocus
                                 className={classNames({
-                                    'p-invalid': submitted && !usuario.nome
+                                    'p-invalid': submitted && !usuario.email
                                 })}
                             />
                             {submitted && !usuario.email && <small className="p-invalid">Email é obrigatório.</small>}
@@ -381,7 +384,7 @@ const Usuario = () => {
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
                             {usuario && (
                                 <span>
-                                    Você realmente deseja excluir o usuario <b>{usuario.nome}</b>?
+                                    Você realmente deseja excluir o usuario <b>{usuario.name}</b>?
                                 </span>
                             )}
                         </div>
